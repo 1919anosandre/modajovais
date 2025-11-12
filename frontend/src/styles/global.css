@@ -5,8 +5,9 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Outfit', sans-serif;
-    background-color: #ffffff;
+    background-color: #ffffffec;
 border: none;
 height: 100%;
 width: 100%;
+text-transform: capitalize;
   }

@@ -40,8 +40,8 @@ text-align: left;
 }
 .item-carrinho img {
   border-radius: 8px;
-  height: 160px;
-  width: 160px;
+  height: 190px;
+  width: 180px;
   object-fit: cover;
 }
 
@@ -67,7 +67,7 @@ text-align: left;
 }
 
 .quantidade-controle button {
-  background-color: #747373;
+  background-color: #18192e;
   color: white;
   border: none;
   padding: 5px;
@@ -83,7 +83,7 @@ text-align: left;
 }
 
 .botao-remover {
-  background-color: #D9A441;
+  background-color: #333;
   margin-top: 5px;
 }
 
@@ -102,7 +102,7 @@ text-align: left;
 }
 
 .total-carrinho button {
-  background-color: #D9A441;
+  background-color: #333;
   color: white;
   padding: 0.8rem 1.5rem;
   font-size: 15px;
@@ -127,4 +127,8 @@ align-items: center;
 height: 50px;
 margin-top: 30px;
 margin-right: 100px;
+}
+
+.comprarProduto{
+background-color: #141228;
 }

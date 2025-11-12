@@ -9,9 +9,41 @@
     
   }
 
+  
+.imagem-container {
+  position: relative;
+}
+
+.imagem-container img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Selo */
+.selo {
+  position: absolute;
+  top: 2px;
+  left: 10px;
+  background-color: #ff5252;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+  .containerDestaques h2{
+      color: rgb(8, 8, 8);
+  font-size: 50px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+  }
+
   h3{
   color: rgb(8, 8, 8);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
   letter-spacing: 1px;
@@ -19,7 +51,7 @@
 
   h4{
     color: #000000;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-align: center;
     letter-spacing: 1px;
@@ -31,11 +63,20 @@
   }
   .Card p{
   color: #000000;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 400;
   letter-spacing: 1px;
-    margin: 4px 0; /* reduz espaço acima e abaixo */
+  }
 
+  .precotamanho{
+     color: red;
+  font-size: 1.1rem;
+  font-weight: 600;
+  }
+  .parcelamentotamanho {
+  color: red;
+  font-size: 0.9rem;
+  font-weight: 600;
   }
   
   .Card {
@@ -49,9 +90,10 @@
     height: auto;
 
   }
+
+
   
   button {
-background: linear-gradient(to right, #1b1b1c, #1b1d21, #111418);
     color: white;
     padding: 5px;
     border: none;
@@ -61,10 +103,12 @@ background: linear-gradient(to right, #1b1b1c, #1b1d21, #111418);
     border-radius: 10px;
     width: 150px;
     margin-top: 5px;
+  background-color: #0f0b27;
   }
 
   button:hover{
-  background-color: #14a124;
+      background-color: rgb(19, 19, 82);
+
   }
   
 .botao-categoria {
@@ -133,7 +177,7 @@ background: linear-gradient(to right, #1b1b1c, #1b1d21, #111418);
   
 .tamanhoSelector {
   margin: 10px 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
@@ -151,9 +195,10 @@ background: linear-gradient(to right, #1b1b1c, #1b1d21, #111418);
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  display: none;
 }
 .cores {
-  display: flex;
+  display: none;
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -168,6 +213,11 @@ background: linear-gradient(to right, #1b1b1c, #1b1d21, #111418);
 @media (max-width: 767px) {
 .produtos{
 width: 100%;
+}
+
+.Card{
+flex-direction: column;
+display: flex;
 }
 
 }

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import CoresProduto from "/src/components/CoresItens";
 import { useNavigate } from "react-router-dom";
 
-function CardProduto({ nome, preco, tamanho, parcelas, cores = [], imagem = [] }) {
+function CardProduto({ nome, preco, tamanho, parcelas, cores = [], imagem = [] , selo, precosemdesconto,video }) {
   const [corSelecionadaIndex, setCorSelecionadaIndex] = useState(0);
+
   const navigate = useNavigate();
 
   function adicionarAoCarrinho() {
@@ -25,13 +26,20 @@ function CardProduto({ nome, preco, tamanho, parcelas, cores = [], imagem = [] }
     alert(`${nome} adicionado ao carrinho!`);
   }
 
+
+
+
   const parcelamento = () => {
     const parcelas = 6;
     const valorParcela = (parseFloat(preco) / parcelas).toFixed(2);
     const res = valorParcela.replace('.' , ',')
-    return `R$ ${res} sem juros`;
+    return `R$ ${res} `;
   };
 
+  const precoreplace = ()=>{
+   return preco.toString().replace('.' , ',')
+  
+  }
   const irParaDetalhes = () => {
     navigate("/detalhes", {
       state: {
@@ -42,19 +50,58 @@ function CardProduto({ nome, preco, tamanho, parcelas, cores = [], imagem = [] }
         parcelas,
         cores,
         corSelecionadaIndex,
+        selo,
+        precosemdesconto,
+        video
       },
     });
   };
 
+    const [hover, setHover] = useState(false);
+
   return (
-    <div className="Card">
-     {/* Imagem única conforme cor selecionada */}
-      <img
-        src={Array.isArray(imagem) ? imagem[corSelecionadaIndex] : imagem}
-        alt={`${nome} - ${cores[corSelecionadaIndex] || ""}`}
-        onClick={irParaDetalhes}
-        style={{ cursor: "pointer" }}
-      />
+         <div className="Card">
+      <div
+        className="imagem-container"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{ position: "relative", overflow: "hidden" }}
+      >
+        {selo && <span className="selo">{selo}</span>}
+
+        {hover && video ? (
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              width: "100%",
+              height: "300px",
+              objectFit: "cover",
+              opacity: hover ? 1 : 0,
+              transition: "opacity 0.4s ease-in-out",
+              cursor: "pointer",
+            }}
+            onClick={irParaDetalhes}
+          />
+        ) : (
+          <img
+            src={Array.isArray(imagem) ? imagem[corSelecionadaIndex] : imagem}
+            alt={`${nome} - ${cores[corSelecionadaIndex] || ""}`}
+            onClick={irParaDetalhes}
+            style={{
+              width: "100%",
+              height: "300px",
+              objectFit: "cover",
+              opacity: hover ? 0 : 1,
+              transition: "opacity 0.4s ease-in-out",
+              cursor: "pointer",
+            }}
+          />
+        )}
+      </div>
 
       <h4 onClick={irParaDetalhes} style={{ cursor: "pointer" }}>
         {nome}
@@ -66,16 +113,21 @@ function CardProduto({ nome, preco, tamanho, parcelas, cores = [], imagem = [] }
         onCorSelecionada={setCorSelecionadaIndex}
       />
 
-      <select name="tamanho" id="tamanho">
-        <option value="p">P</option>
-        <option value="m">M</option>
-        <option value="g">G</option>
-        <option value="gg">GG</option>
-      </select>
+      {precosemdesconto && (
+        <p>
+          <span className="precosemdesconto" style={{ fontSize: "0.9rem" }}>
+            <s>R${precosemdesconto}</s>
+          </span>
+        </p>
+      )}
 
-      <p>em 6x {parcelamento()}</p>
-      <p>ou à vista R$ {preco}</p>
-      <button onClick={adicionarAoCarrinho}>Comprar</button>
+      <p>
+        R$ <span className="precotamanho">{precoreplace()}</span>
+      </p>
+
+      <p>
+        6x <span className="parcelamentotamanho">{parcelamento()}</span> sem juros
+      </p>
     </div>
   );
 }
