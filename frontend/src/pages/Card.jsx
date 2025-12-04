@@ -45,6 +45,13 @@ import imgcalcabaggyfeminina from "/src/assets/calca-jeans-baggy.webp";
 import imgconjuntocybermasculino from "/src/assets/conjunto-cyber-verao-masculino.jpg";
 import imgconjuntofitnessfemininoazul from "/src/assets/conjuntofitnessfemininomarinhoazul.webp";
 import imgconjuntofitnessfemininorosa from "/src/assets/conjuntofitnessfemininorosa.webp";
+import imgconjuntofitnessfemininopreto from "/src/assets/conjuntofitnessfemininopreto.webp";
+import imgshortsfemininojeanspreto from "/src/assets/shortsJeansPretofeminino.webp";
+import imgshortsfemininojeansazul from "/src/assets/shortsJeansfeminino.webp";
+import imgshortsfemininolegging from "/src/assets/shortsLegginfemininocinza.webp";
+import imgshortsfemininoadidas from "/src/assets/shortsAdidasfeminino.webp";
+
+
 import videocamisabolinhasfeminina from "/src/video/Hailuo_Video_441902774979112962.mp4";
 import videocroppedfeminino from "/src/video/Hailuo_Video_441907919204884486.mp4";
 import videoblusafeminina from "/src/video/Hailuo_Video_442616606244802568.mp4";
@@ -85,6 +92,7 @@ export default function Card({ filtro }) {
     "Calça Jeans feminino": ["#1e3d59", "#2f4f4f"],
     "Calça slim marrom masculina": ["#8b4513", "#a0522d"],
     "blusascores": ["#4A90E2" , "#000000"],
+        "Conjunto fitnes": ["#4A90E2" , "#ff86f7", "#000000"],
     "Conjunto alfaitaria": [" rgba(210, 196, 172, 1)","rgb(25, 25, 58)",  "rgb(3, 48, 3)"]
   };
 
@@ -94,6 +102,8 @@ export default function Card({ filtro }) {
   );
 
 */
+
+
   return (
 
     <div>
@@ -192,8 +202,8 @@ export default function Card({ filtro }) {
             nome="Conjunto fitness feminino"
             precosemdesconto = "250,00 "
             preco="199.90"
-            imagem={[imgconjuntofitnessfemininoazul, imgconjuntofitnessfemininorosa]}
-            cores={coresPorProduto["Camiseta Oversized"]}
+            imagem={[imgconjuntofitnessfemininoazul, imgconjuntofitnessfemininorosa , imgconjuntofitnessfemininopreto]}
+            cores={coresPorProduto["Conjunto fitnes"]}
                 selo="Oferta Limitada"
 
           />
@@ -362,10 +372,20 @@ export default function Card({ filtro }) {
 
          <div
         className="moda-feminina-shorts"
-        style={{ display: filtro === "" || filtro === "moda-feminina-calcas" ? "block" : "none" }}
+        style={{ display: filtro === "" || filtro === "moda-feminina-shorts" ? "block" : "none" }}
       >
         <div className="produtos">
-          <CardProduto nome="Calça slim marrom masculina" preco="59.90" imagem={[imgcalçaslimmasculina]} cores={coresPorProduto["Calça slim marrom masculina"]} />
+          <CardProduto nome="Shorts jeans feminino" preco="49.90" imagem={[imgshortsfemininojeanspreto, imgshortsfemininojeansazul]} cores={coresPorProduto["Calça slim marrom masculina"]} />
+       
+        </div>
+
+          <div className="produtos">
+          <CardProduto nome="Shorts adidas feminino" preco="49.90" imagem={[imgshortsfemininoadidas]} cores={coresPorProduto["Calça slim marrom masculina"]} />
+      
+        </div>
+
+          <div className="produtos">
+          <CardProduto nome="Shorts legging feminino" preco="49.90" imagem={[imgshortsfemininolegging]} cores={coresPorProduto["Calça slim marrom masculina"]} />
        
        
         </div>

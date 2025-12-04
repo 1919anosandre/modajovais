@@ -25,7 +25,6 @@ function Home() {
 
   return (
     <div>
-      <Header filtro={filtro} setFiltro={setFiltro} /> {/* aqui */}
       <div className="container-home">
         <div className="slideshow">
           <img src={images[currentImage]} alt="Slideshow" className="slideshow-img" />

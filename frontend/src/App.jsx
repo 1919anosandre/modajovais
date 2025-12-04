@@ -12,6 +12,7 @@ import Carrinho from "../src/pages/Carrinho";
 import Detalhes from "../src/pages/Detalhes";
 import Contato from "../src/pages/Contato";
 import Login from "../src/pages/Login";
+import Favoritos from "../src/pages/CardFavoritos";
 import Compras from "../src/pages/Compras";
 import BuscarProduto from "./components/buscar";
 
@@ -21,13 +22,13 @@ function App() {
   const [busca, setBusca] = useState("");
 
   // Carrega usuários do backend (exemplo)
-  useEffect(() => {
+ /* useEffect(() => {
     fetch('http://localhost:3001/usuarios')
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((err) => console.error("Erro ao buscar usuários:", err));
   }, []);
-
+*/
   return (
     <div>
       <Router>
@@ -51,6 +52,7 @@ function App() {
           <Route path="/card" element={<Card filtro={filtro} busca={busca} />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/detalhes" element={<Detalhes />} />
+          <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/login" element={<Login />} />
           <Route path="/detalhes/carrinho" element={<Carrinho />} />
           <Route path="/comprar" element={<Compras />} />

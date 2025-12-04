@@ -4,41 +4,85 @@ import "/src/styles/global.css";
 import "/src/styles/Detalhes.css";
 import Header from "/src/components/Header";
 import { CiHeart } from "react-icons/ci";
+import arrow from "/src/assets/arrow-left.svg";
 
-  
 function Detalhes() {
   const { state } = useLocation();
-    const [isClicked, setIsClicked] = useState(false);
-
-      const handleClick = () => {
-    setIsClicked(!isClicked); // alterna entre clicado e não clicado
-  };
+  const [isFavorito, setIsFavorito] = useState(false); // mudou de isClicked para isFavorito
+  const [quantidade, setQuantidade] = useState(1);
+  const [precoTotal, setPrecoTotal] = useState(parseFloat(state?.preco || 0));
+  const [imagemAtualIndex, setImagemAtualIndex] = useState(state?.corSelecionadaIndex || 0);
+  const [corSelecionada, setCorSelecionada] = useState(state?.cores?.[imagemAtualIndex] || "");
+  const [comentarios, setComentarios] = useState([]);
+  const [texto, setTexto] = useState("");
 
   if (!state) return <Navigate to="/" replace />;
 
-  const {
-    nome,
-    preco,
-    imagens = [],
-    cores = [],
-    tamanho,
-    parcelas
-  } = state;
+  const { nome, preco, imagens = [], cores = [], tamanho, parcelas } = state;
 
-  const [quantidade, setQuantidade] = useState(1);
-  const [precoTotal, setPrecoTotal] = useState(parseFloat(preco));
-  const [imagemAtualIndex, setImagemAtualIndex] = useState(
-    state.corSelecionadaIndex || 0
-  );
-  const [corSelecionada, setCorSelecionada] = useState(
-    cores[imagemAtualIndex] || ""
-  );
-  const [mostrarInputCep, setMostrarInputCep] = useState(false);
+  // Verifica se o produto já está nos favoritos
+// Verifica se o produto já está nos favoritos
+// Verifica se o produto já está nos favoritos
 
-  // Estado para comentários
-  const [comentarios, setComentarios] = useState([]);
-  const [texto, setTexto] = useState("");
-  const [cep, setCep] = useState("");
+const getFavoritos = () => {
+  try {
+    const data = localStorage.getItem("favoritos");
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+
+    // garante que sempre retorna array
+    return Array.isArray(parsed) ? parsed : [];
+
+  } catch {
+    // Se estiver corrompido, reseta
+    localStorage.setItem("favoritos", "[]");
+    return [];
+  }
+};
+
+// Verifica se está favoritado
+useEffect(() => {
+  if (!state?.id) return;
+
+  const favoritosLocal = getFavoritos();
+  const existe = favoritosLocal.some(item => item.id === state.id);
+  setIsFavorito(existe);
+}, [state]);
+
+
+// Adicionar ou remover dos favoritos
+const handleFavoritoClick = () => {
+  try {
+    const favoritosLocal = getFavoritos();
+
+    if (isFavorito) {
+      // remove
+      const novos = favoritosLocal.filter(item => item.id !== state.id);
+      localStorage.setItem("favoritos", JSON.stringify(novos));
+      setIsFavorito(false);
+      return;
+    }
+
+    // adiciona
+    const novoProduto = {
+      id: state.id,
+      nome,
+      preco: parseFloat(preco),
+      imagem: imagens[imagemAtualIndex],
+      tamanho,
+      cor: cores[imagemAtualIndex],
+    };
+
+    const novos = [...favoritosLocal, novoProduto];
+    localStorage.setItem("favoritos", JSON.stringify(novos));
+    setIsFavorito(true);
+
+  } catch (e) {
+    console.error("Erro ao salvar favoritos:", e);
+  }
+};
+
+
 
   const handleCorClick = (idx) => {
     setImagemAtualIndex(idx);
@@ -62,7 +106,7 @@ function Detalhes() {
   const adicionarAoCarrinho = () => {
     const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
     const novoProduto = {
-      id: Date.now(),
+      id: state.id,
       nome,
       preco: parseFloat(preco),
       imagem: imagens[imagemAtualIndex],
@@ -78,73 +122,71 @@ function Detalhes() {
     alert(`${nome} adicionado ao carrinho!`);
   };
 
+  // Comentários
+  useEffect(() => {
+    const armazenarComentarios = JSON.parse(localStorage.getItem('texto')) || [];
+    setComentarios(armazenarComentarios);
+  }, []);
+
+  const enviarComentario = () => {
+    if (texto.trim() === "") return;
+    const novoArray = [...comentarios, texto];
+    setComentarios(novoArray);
+    localStorage.setItem('texto', JSON.stringify(novoArray));
+    setTexto("");
+  };
+
   const parcelamento = () => {
     const valorParcela = (parseFloat(preco) / 6).toFixed(2);
     return `R$ ${valorParcela.replace(".", ",")} sem juros`;
   };
 
-        useEffect(() =>{
-  const armazenarComentarios = JSON.parse(localStorage.getItem('texto')) || [];
-setComentarios(armazenarComentarios)
-    } , [])
-
-
-  const enviarComentario = () => {
-  if (texto.trim() === "") return;
-
-  const novoArray = [...comentarios, texto]; // adiciona comentário
-  setComentarios(novoArray);                 // atualiza state
-  localStorage.setItem('texto', JSON.stringify(novoArray)); // salva no localStorage
-  setTexto("");                               // limpa textarea
-};
-
-    
   return (
     <>
-      <Header />
+      <Header /> {/* Header agora fica ciente do localStorage */}
+
       <div className="container">
         <div className="detalhes-flex">
+          <a href="/Home">
+            <img src={arrow} alt="Voltar" className="icone-voltar" />
+          </a>
+
           <img
             src={imagens[imagemAtualIndex]}
             alt={`${nome} - ${corSelecionada}`}
             className="imagem-grande"
           />
+
           <div className="alinharcolumn">
-<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width:"100%"}}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width:"100%"}}>
+              <h2>{nome}</h2>
+              <CiHeart
+                onClick={handleFavoritoClick}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  fill: isFavorito ? "red" : "currentColor",
+                  cursor: "pointer",
+                  transition: "fill 0.3s ease",
+                }}
+              />
+            </div>
 
-            <h2 style={{textAlign:"center"}}>{nome}</h2>
-        <CiHeart
-      onClick={handleClick}
-      style={{
-        marginLeft: "5rem",
-        width: "32px",
-        height: "32px",
-        fill: isClicked ? "black" : "currentColor", // muda a cor ao clicar
-        cursor: "pointer",
-        transition: "fill 0.3s ease", // animação suave
-      }}
-    />
-  
-
-          </div>
             <select name="tamanho" id="tamanho" defaultValue={tamanho}>
               <option value="p">P</option>
               <option value="m">M</option>
               <option value="g">G</option>
               <option value="gg">GG</option>
             </select>
+
             <p>em 6x {parcelamento()}</p>
-            <p>
-              ou à vista R$ {precoTotal.toFixed(2).replace(".", ",")}
-            </p>
+            <p>ou à vista R$ {precoTotal.toFixed(2).replace(".", ",")}</p>
 
             <div className="cores-lista" style={{ marginTop: 20 }}>
               {cores.map((cor, idx) => (
                 <div
                   key={idx}
-                  className={`cor-item ${
-                    corSelecionada === cor ? "selecionada" : ""
-                  }`}
+                  className={`cor-item ${corSelecionada === cor ? "selecionada" : ""}`}
                   style={{ backgroundColor: cor, cursor: "pointer" }}
                   onClick={() => handleCorClick(idx)}
                   title={cor}
@@ -159,69 +201,34 @@ setComentarios(armazenarComentarios)
             </div>
 
             <div className="centralizarbuttons">
-              <button
-                className="addcarrinho"
-                onClick={adicionarAoCarrinho}
-              >
+              <button className="addcarrinho" onClick={adicionarAoCarrinho}>
                 Adicionar ao Carrinho
               </button>
-              
             </div>
           </div>
         </div>
       </div>
 
-      <div className="especificacoesProdutos">
-        <p>Descrição:
-          <br></br>
-Camiseta de modelagem oversized, confortável e estilosa, ideal para o dia a dia. Tecido 100% algodão, toque macio e respirável. Gola reforçada e costura dupla nas mangas para maior durabilidade.
-          <br></br><br></br>
-
-Especificações técnicas:
-          <br></br><br></br>
-
-Material: 100% algodão
-          <br></br>
-
-Modelagem: Oversized (mais larga e comprida)
-          <br></br>
-
-Gola: Careca (redonda)
-          <br></br>
-
-Cores disponíveis: Preto, branco, cinza
-          <br></br>
-
-Medidas aproximadas (cm):
-          <br></br>
-
-Tamanho	Largura	Altura	Manga
-P	54	72	22
-M	57	75	23
-G	60	78	24
-GG	63	81	25</p>
-      </div>
-
       {/* Avaliações */}
       <div className="containerAvaliacoes">
-<select className="avaliacaoEstrelas">
-  <option value="5">★★★★★</option>
-  <option value="4">★★★★☆</option>
-  <option value="3">★★★☆☆</option>
-  <option value="2">★★☆☆☆</option>
-  <option value="1">★☆☆☆☆</option>
-</select>
+        <select className="avaliacaoEstrelas">
+          <option value="5">★★★★★</option>
+          <option value="4">★★★★☆</option>
+          <option value="3">★★★☆☆</option>
+          <option value="2">★★☆☆☆</option>
+          <option value="1">★☆☆☆☆</option>
+        </select>
 
         <h3>Deixe sua avaliação</h3>
         <div className="avaliacoes">
-        <textarea
-          id="avaliacaoComentarios"
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
-        ></textarea>
-        <button className="enviarAvaliacao" onClick={enviarComentario}>
-          Enviar
-        </button>
+          <textarea
+            id="avaliacaoComentarios"
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+          ></textarea>
+          <button className="enviarAvaliacao" onClick={enviarComentario}>
+            Enviar
+          </button>
         </div>
       </div>
 

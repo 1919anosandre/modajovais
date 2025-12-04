@@ -1,3 +1,6 @@
+/* ============================
+   HEADER
+============================ */
 header {
   background-color:#333;
   color: white;
@@ -5,6 +8,8 @@ header {
   top: 0;
   position: sticky;
   z-index: 100;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .top-header {
@@ -12,18 +17,22 @@ header {
   justify-content: center;
   align-items: center;
   padding: 0 10px;
-
 }
 
 .logo-wrapper {
   flex: 1;
 }
 
-FaShoppingBag{
-color: white;
+.logo-wrapper .Logo-img {
+    width: clamp(60px, 10vw, 140px);
+  height: auto;
+
+  margin-right: auto;
 }
 
-
+/* ============================
+   ÍCONES / HEADER CONTENT
+============================ */
 .header-content {
   flex: 5;
   display: flex;
@@ -32,12 +41,10 @@ color: white;
   gap: 2px;
 }
 
- .logo-wrapper .Logo-img {
-  height: 140px;
-  width: 140px;
-  display: flex;
-  margin-right: auto;
-}
+  .icons-desktop{
+    gap: 14px;
+    display: flex;
+  }
 
 .barra-pesquisa {
   display: flex;
@@ -49,9 +56,9 @@ color: white;
   padding: 10px;
   color: black;
   border-radius: 15px;
-  width: 400px;
+  width: 20%;
   font-size: 1.1rem;
-  border: 02px solid rgb(255, 255, 255);
+  border: 2px solid white;
   outline: none;
 }
 
@@ -69,12 +76,52 @@ color: white;
   margin-top: 4px;
 }
 
+.logar-se {
+  background-color: white;
+  color: #333;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-right: 16px;
+}
 
+.logar-se:hover {
+  background: #1f1e1e;
+  color: #fff;
+}
+
+/* Bootstrap icons */
+.bi-search,
+.bi-person,
+.bi-cart2 {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.bi-search { fill: black; }
+.bi-person,
+.bi-cart2 { fill: white; margin-left: 20px; }
+
+.bi-geo-alt { margin-right: 4px; }
+
+.Cep-li li { font-weight: 900; }
+
+
+.icone-favoritos{
+margin-left: 10px;
+}
+/* ============================
+   MENU DE CATEGORIAS
+============================ */
 .menu-categorias {
   margin-top: 10px;
   display: flex;
   justify-content: center;
 }
+
 .menu-categorias ul {
   list-style: none;
   padding: 0;
@@ -87,7 +134,6 @@ color: white;
   color: #ffffff;
   cursor: pointer;
   font-weight: 500;
-  
 }
 
 /* Linha animada */
@@ -95,7 +141,7 @@ color: white;
   content: "";
   position: absolute;
   left: 0;
-  bottom: -4px; /* espaço entre texto e linha */
+  bottom: -4px;
   width: 0;
   height: 2px;
   background-color: #ffffff;
@@ -133,30 +179,9 @@ color: white;
 }
 
 
-  bi-search{
-height: 30px;
-width: 30px;
-cursor: pointer;
-fill: #000000;
-
-}
-
- .bi-person , .bi-cart2{
-  height: 30px;
-width: 30px;
-cursor: pointer;
-fill: #ffffff;
-margin-left: 20px;
-}
-
-.bi-geo-alt{
-margin-right: 4px;
-}
-
-.Cep-li li{
-  font-weight: 900;
-}
-
+/* ============================
+   BOTÃO MENU HAMBÚRGUER
+============================ */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -170,60 +195,135 @@ margin-right: 4px;
   width: 25px;
   border-radius: 2px;
   transform-origin: center;
-  position: relative;
 }
 
-
-/* Media Query para mobile */
+/* ============================
+   MOBILE
+============================ */
 @media (max-width: 767px) {
-  /* Exibe o botão hamburger */
+  .icons-desktop{
+  display: none;
+  }
+  .icons-mobile {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    flex-direction: column;
+        justify-content: flex-start !important;
+
+  }
+
+  .icons-mobile a {
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+  }
+
+  .icons-mobile .contador {
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top: -5px;
+  }
+  header{
+width: 100%;
+  }
+
+.logo-wrapper{
+    width: clamp(66px, 20vw, 140px);
+
+}
+
+.barra-pesquisa  input{
+}
+  /* Botão hamburguer */
   .menu-toggle {
     display: flex;
+margin-left: auto !important;
+order: 0;
   }
 
   .menu-toggle.ativar span:nth-child(1){
-  transform: translateY(36px) rotate(-45deg);
-  background-color: red;
-}
-
+    transform: translateY(8px) rotate(45deg);
+  }
 
   .menu-toggle.ativar span:nth-child(2){
-width: 0;
-}
+    opacity: 0;
+  }
 
   .menu-toggle.ativar span:nth-child(3){
-  transform: translateY(-36px) rotate(-45deg);
-  background-color: red;
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Ajusta header */
+  .top-header {
+    justify-content: space-between;
+    
+  }
+  .menu-categorias.show > .icons-mobile {
+  display: flex !important;
 }
 
 
-  /* Ajusta top-header pra ficar alinhado */
-  .top-header {
-    justify-content: space-between;
-  }
-
-  /* Esconde o conteúdo do header (pesquisa, ícones) para liberar espaço, opcional */
   .header-content {
-    display: none;
+    display: flex;
+    padding: 10px;
+    height: 80px;
   }
 
-  /* Menu categorias fica oculto por padrão no mobile */
+  /* Esconde menu por padrão */
   .menu-categorias {
     display: none;
     flex-direction: column;
     background-color: #333;
     padding: 10px;
+    justify-content: flex-start !important;
   }
 
-  /* Quando abrir o menu, adiciona classe 'show' para mostrar */
+  /* Mostra menu quando ativado */
   .menu-categorias.show {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
 
-  /* Ajusta itens do menu para vertical */
+  /* Torna itens do menu em COLUNA */
   .menu-categorias li {
-    margin: 10px 0;
-    color: white;
+    display: block !important;
+    width: 100%;
+    margin: 10px 0 !important;
   }
+
+  /* Dropdown no mobile */
+  .menu-categorias .dropdown {
+    position: static;
+    border: none;
+    box-shadow: none;
+    padding-left: 20px;
+  }
+
+ .bi bi-search{
+
+ }
 }
+
+
+@media (min-width: 768px) and (max-width: 1024px) { 
+header{
+width:100% ;
+}
+
+.bi bi-search{
+    right: 0.5rem !important;
+
+}
+
+
+
+     }
